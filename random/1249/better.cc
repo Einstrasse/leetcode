@@ -21,39 +21,33 @@ public:
         If scanner meet a right parenthesis, if stack is not empty, pop a item, otherwise, ignore right parenthesis. (right more)
         If scanner finishes with stack containing contents. (Left more)
         */
-        stack<int> stk;
-        vector<int> ignores;
+        vector<int> stk;
         for (size_t i=0; i < s.length(); i++) {
             char c = s[i];
             if (c >= 'a' && c <= 'z') continue; //pass for alphabet
             else if (c == '(') {
-                stk.push(i);
+                stk.push_back(i+1);
             } else if (c == ')') {
-                if (stk.size()) {
-                    stk.pop();
+                if (stk.size() && stk.back() > 0) {
+                    stk.pop_back();
                 } else {
-                    ignores.push_back(i); //ignore right more cases
+                    stk.push_back(-(i+1)); //ignore right more cases
                 }
             }
         }
-        while (stk.size()) { //ignore left more cases
-            ignores.push_back(stk.top());
-            stk.pop();
-        }
         
         //Rebuild string exclude ignored index chars.
-        sort(ignores.begin(), ignores.end());
         string res = "";
         int j = 0;
         for (size_t i=0; i < s.length(); i++) {
-            if (j < ignores.size() && ignores[j] == i) {
+            if (j < stk.size() && abs(stk[j]) - 1 == i) {
                 j++;
                 continue;
             }
             res += s[i];
         }
         /*
-        Time complexity = O(NlgN)
+        Time Complexity = O(N)
         Space Complexity = O(N)
         */
         return res;
