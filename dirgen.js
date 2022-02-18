@@ -4,7 +4,14 @@ if (process.argv.length < 3) {
     console.log(`Usage: ${process.argv[0]} ${process.argv[1]} LeetcodeProblemURL`);
     process.exit();
 }
-const URL = process.argv[2];
+let sanitizeURL = (url) => {
+    const suffix = "submissions/"
+    if (url.endsWith(suffix)) {
+        url = url.slice(0, -suffix.length);
+    }
+    return url;
+}
+const URL = sanitizeURL(process.argv[2]);
 const puppeteer  = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
@@ -34,18 +41,22 @@ const path = require('path');
     }
     let readmePath = path.join(dirpath, "readme.md");
     let codePath = path.join(dirpath, "code.cc");
-    fs.writeFile(readmePath, `# ${probNumber}. ${probName}\n\n[${URL}](${URL})\n\n`, (err) => {
-        if (!err) return;
-        console.error(`Writing ${readmePath} error...`);
-        console.error(err);
+    fs.writeFile(readmePath, `# ${probNumber}. ${probName}\n\n[${URL}](${URL})    \n\n## My Solution\n\n\n### Time Complexity\n\n###Space Complexity\n\n## Better Solution`, (err) => {
+        if (!err) {
+            console.error(`Writing ${readmePath} error...`);
+            console.error(err);
+        } else {
+            console.log(`Writing ${reamdePath} DONE!`);
+        }
     });
     fs.writeFile(codePath, "", (err) => {
-        if (!err) return;
-        console.error(`Writing ${codePath} error...`);
-        console.error(err);
+        if (!err) {
+            console.error(`Writing ${codePath} error...`);
+            console.error(err);
+        } else {
+            console.log(`Writing ${codePath} DONE!`);
+        }
     });
 
     await browser.close();
 })();
-
-console.log(URL);
