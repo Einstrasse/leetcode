@@ -32,6 +32,7 @@ const path = require('path');
     }
     let data = rawTitle.split(". ");
     let probNumber = data[0].padStart(4, '0');
+    console.log(`For Problem ${probNumber}....`);
     let probName = data[1];
     let dirpath = path.join(__dirname, "random", probNumber);
     if (!fs.existsSync(dirpath)) {
@@ -41,8 +42,8 @@ const path = require('path');
     }
     let readmePath = path.join(dirpath, "readme.md");
     let codePath = path.join(dirpath, "code.cc");
-    fs.writeFile(readmePath, `# ${probNumber}. ${probName}\n\n[${URL}](${URL})    \n\n## My Solution\n\n\n### Time Complexity\n\n###Space Complexity\n\n## Better Solution`, (err) => {
-        if (!err) {
+    fs.writeFile(readmePath, `# ${probNumber}. ${probName}\n\n[${URL}](${URL})    \n\n## My Solution\n\n\n### Time Complexity\n\n### Space Complexity\n\n## Better Solution`, (err) => {
+        if (err) {
             console.error(`Writing ${readmePath} error...`);
             console.error(err);
         } else {
@@ -50,7 +51,7 @@ const path = require('path');
         }
     });
     fs.writeFile(codePath, "", (err) => {
-        if (!err) {
+        if (err) {
             console.error(`Writing ${codePath} error...`);
             console.error(err);
         } else {
