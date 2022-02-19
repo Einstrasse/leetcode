@@ -42,12 +42,12 @@ const path = require('path');
     }
     let readmePath = path.join(dirpath, "readme.md");
     let codePath = path.join(dirpath, "code.cc");
-    fs.writeFile(readmePath, `# ${probNumber}. ${probName}\n\n[${URL}](${URL})    \n\n## My Solution\n\n\n### Time Complexity\n\n### Space Complexity\n\n## Better Solution`, (err) => {
+    fs.writeFile(readmePath, `# ${probNumber}. ${probName}\r\n\r\n[${URL}](${URL})    \r\n\r\n## My Solution\r\n\r\n\r\n### Time Complexity\r\n\r\n### Space Complexity\r\n\r\n## Better Solution\r\n`, (err) => {
         if (err) {
             console.error(`Writing ${readmePath} error...`);
             console.error(err);
         } else {
-            console.log(`Writing ${reamdePath} DONE!`);
+            console.log(`Writing ${readmePath} DONE!`);
         }
     });
     fs.writeFile(codePath, "", (err) => {
