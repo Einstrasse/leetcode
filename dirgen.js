@@ -15,25 +15,9 @@ const URL = sanitizeURL(process.argv[2]);
 const puppeteer  = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
-(async () => {
-    const browser = await puppeteer.launch({
-        headless: true
-    });
-    const page = await browser.newPage();
-    await page.goto(URL);
-    let rawTitle = await page.$eval(
-        ".css-v3d350", element => {
-            return element.textContent;
-        }
-    );
-    if (typeof rawTitle !== 'string' || rawTitle.indexOf(". ") === -1) {
-        console.error("Cannot find title!")
-        process.exit();
-    }
-    let data = rawTitle.split(". ");
-    let probNumber = data[0].padStart(4, '0');
+
+async function dirGen(probNumber, probName, URL) {
     console.log(`For Problem ${probNumber}....`);
-    let probName = data[1];
     let dirpath = path.join(__dirname, "random", probNumber);
     if (!fs.existsSync(dirpath)) {
         fs.mkdirSync(dirpath, {
@@ -58,6 +42,27 @@ const path = require('path');
             console.log(`Writing ${codePath} DONE!`);
         }
     });
+}
+// dirGen("2128", "Remove All Ones With Row and Column Flips", "https://leetcode.com/problems/remove-all-ones-with-row-and-column-flips/"); --- for private problem..
+(async () => {
+    const browser = await puppeteer.launch({
+        headless: true
+    });
+    const page = await browser.newPage();
+    await page.goto(URL);
+    let rawTitle = await page.$eval(
+        ".css-v3d350", element => {
+            return element.textContent;
+        }
+    );
+    if (typeof rawTitle !== 'string' || rawTitle.indexOf(". ") === -1) {
+        console.error("Cannot find title!")
+        process.exit();
+    }
+    let data = rawTitle.split(". ");
+    let probNumber = data[0].padStart(4, '0');
+    let probName = data[1];
+    await dirGen(probNumber, probName, URL);
 
     await browser.close();
 })();
